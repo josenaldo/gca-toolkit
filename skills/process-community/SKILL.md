@@ -159,7 +159,9 @@ Lê um PDF de Community Session na pasta `03-Domínios/Inglês/GCA/Community/` e
       ---
       ```
 
-11. **Garantir que nenhuma sintaxe Templater (`<% ... %>`) sobrou** em ambos os arquivos. Se sobrou → abortar antes de gravar.
+11. **Verificar integridade antes de gravar** (Processed e Workbook):
+    - **Sem Templater:** nenhuma sintaxe `<% ... %>` pode ter sobrado em nenhum dos dois arquivos. Se sobrou → abortar antes de gravar.
+    - **Com frontmatter:** cada arquivo DEVE abrir com um bloco YAML (`---` na linha 1, fechado por outro `---`) contendo, no mínimo, `title`, `type` e `community_session`. Se o Workbook OU o Processed sair sem frontmatter → abortar antes de gravar. (Regressão histórica: o Workbook nasce sem frontmatter quando se parte de um template antigo — esta guarda impede que volte a acontecer.)
 
 12. **Cross-links automáticos:**
     - Workbook → Processed.

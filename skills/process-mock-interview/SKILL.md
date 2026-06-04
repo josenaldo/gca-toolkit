@@ -126,7 +126,9 @@ Lê um PDF de Mock Interview na pasta `03-Domínios/Inglês/GCA/Mock Interview/`
 
       Os slots Draft variam pelo framework: PPF → Anchor/Proof/Pivot; STAR → Situation/Task/Action/Result; livre → 1-2 slots genéricos. Os callouts ficam vazios — você preenche.
 
-11. **Garantir que nenhuma sintaxe Templater (`<% ... %>`) sobrou** em ambos os arquivos. Se sobrou → abortar antes de salvar.
+11. **Verificar integridade antes de salvar** (Processed e Workbook):
+    - **Sem Templater:** nenhuma sintaxe `<% ... %>` pode ter sobrado em nenhum dos dois arquivos. Se sobrou → abortar antes de salvar.
+    - **Com frontmatter:** cada arquivo DEVE abrir com um bloco YAML (`---` na linha 1, fechado por outro `---`) contendo, no mínimo, `title`, `type` e `sessao`. Se o Workbook OU o Processed sair sem frontmatter → abortar antes de salvar. (Regressão histórica: o Workbook nasce sem frontmatter quando se parte de um template antigo — esta guarda impede que volte a acontecer.)
 
 12. **Gerar cross-links automáticos:**
     - Processed: link pra `[[Session NN]]` (mesma semana) na seção "Veja também".

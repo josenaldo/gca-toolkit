@@ -112,7 +112,9 @@ Lê um PDF de Strategic Session na pasta `03-Domínios/Inglês/GCA/Sessions/` e 
       - **Tabelas de tracking** quando o tema da semana exige medição (ex: WPM Log para Session 02 sobre "calibração de cadência"; Time-box log para sessões com time-box rígido). Linhas iniciam vazias — usuário preenche. Decisão: se o PDF menciona métrica que precisa ser auditada ao longo da semana → adicionar tabela.
       - **Exercício de refactor de anti-pattern**: se o Processed contém um exemplo concreto de "resposta ruim" (ex: trecho do Mock anterior que demonstra over-explaining, ingredient list, narrativa de guerreiro), **copiar** esse trecho pro Workbook como exercício "Refactor — <descrição>": apresentar o anti-padrão original num callout `> [!example]-` e abaixo um slot `> [!quote]-` vazio pra versão refatorada. Justificativa pedagógica: anti-pattern só vira aprendizado quando o aluno re-escreve com as próprias mãos.
 
-11. **Garantir que nenhuma sintaxe Templater (`<% ... %>`) sobrou** em ambos os arquivos. Se sobrou → abortar antes de gravar.
+11. **Verificar integridade antes de gravar** (Processed e Workbook):
+    - **Sem Templater:** nenhuma sintaxe `<% ... %>` pode ter sobrado em nenhum dos dois arquivos. Se sobrou → abortar antes de gravar.
+    - **Com frontmatter:** cada arquivo DEVE abrir com um bloco YAML (`---` na linha 1, fechado por outro `---`) contendo, no mínimo, `title`, `type` e `sessao`. Se o Workbook OU o Processed sair sem frontmatter → abortar antes de gravar. (Regressão histórica: o Workbook nasce sem frontmatter quando se parte de um template antigo — esta guarda impede que volte a acontecer.)
 
 12. **Gerar cross-links automáticos:**
     - Processed: link pra `[[Mock Interview NN]]` (mesma semana) e `[[Roadmap]]` em "Veja também".
