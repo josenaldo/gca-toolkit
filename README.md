@@ -1,6 +1,6 @@
 # GCA Toolkit — Skills do Claude Code para a mentoria Global Career Architecture
 
-Um conjunto de **5 skills do Claude Code** + **7 templates do Obsidian** para transformar os PDFs da mentoria GCA (Strategic Sessions, Mock Interviews, Community Sessions e o Cronograma) em notas estruturadas, navegáveis e — o mais importante — em **workbooks de prática ativa** dentro de um vault Obsidian.
+Um conjunto de **9 skills do Claude Code** + **9 templates do Obsidian** para transformar os PDFs da mentoria GCA (Strategic Sessions, Mock Interviews, Community Sessions e o Cronograma) em notas estruturadas, navegáveis e — o mais importante — em **workbooks de prática ativa** dentro de um vault Obsidian.
 
 > Feito originalmente pro meu vault pessoal e compartilhado com a galera do GCA. **Você vai precisar adaptar alguns caminhos e nomes** — está tudo documentado na seção [Como adaptar](#como-adaptar).
 
@@ -44,7 +44,11 @@ gca-toolkit/
 │   ├── process-session/SKILL.md
 │   ├── process-mock-interview/SKILL.md
 │   ├── process-community/SKILL.md
-│   └── coaching/SKILL.md
+│   ├── coaching/SKILL.md
+│   ├── processar-vaga/SKILL.md
+│   ├── process-question/SKILL.md
+│   ├── seed-question/SKILL.md
+│   └── glosa-video/SKILL.md
 └── templates/                 ← copiar pra 00-Meta/templates/GCA/ do seu vault
     ├── Roadmap.md
     ├── Session - Processed.md
@@ -52,10 +56,12 @@ gca-toolkit/
     ├── Mock Interview - Processed.md
     ├── Mock Interview - Workbook.md
     ├── Community - Processed.md
-    └── Community - Workbook.md
+    ├── Community - Workbook.md
+    ├── Template - Vaga.md
+    └── Template - Interview Question.md
 ```
 
-### As 5 skills
+### As 9 skills
 
 | Skill | Comando | O que faz |
 |---|---|---|
@@ -64,10 +70,14 @@ gca-toolkit/
 | **process-mock-interview** | `/process-mock-interview` | Lê um PDF de **Mock Interview** → gera Processed (perguntas Q1-Qn + mentor notes + diagnóstico) + Workbook (slots de draft por pergunta). |
 | **process-community** | `/process-community` | Lê um PDF de **Community Session** (em grupo, com role-plays em Breakout Rooms) → gera Processed + Workbook reflexivo. Detecta automaticamente em quais *rooms* **você** participou. Não consulta o Roadmap (Community é stream paralelo). |
 | **coaching** | `/coaching` | Modo socrático: te ajuda a refinar uma resposta no Workbook **sem nunca escrevê-la por você**. Verifica regras GSC (BLUF, Power Verbs, "I" não "We", time-box, etc.) e cita o Processed. |
+| **processar-vaga** | `/processar-vaga <url>` | Transforma uma URL de vaga em **nota canônica de preparação** com 10 seções: diagnóstico da empresa, match analysis, pitch adaptado, prováveis perguntas em 6 fases, histórias do banco mapeadas, cheat sheet de vocabulário, logística e checklist. Lê o dossiê do candidato (Narrativa Profissional + Roadmap GCA) pra personalizar. |
+| **process-question** | `/process-question Q###` | Expande uma semente do backlog de perguntas em **dois Q-files completos** (EN + PT): Standard Answer ~400-450 palavras em primeira pessoa (voice-note style), Alternative Questions, Answer Strategy, Checklist, Common Traps, Vocabulary e Delivery Notes. |
+| **seed-question** | `/seed-question "<pergunta>"` | Adiciona uma nova semente ao backlog de perguntas sem expandir ainda. Infere `category`, `phase` e `angle` automaticamente, confirma antes de inserir, e mantém os contadores do backlog. |
+| **glosa-video** | `/glosa-video <url>` | Cria fichamento ("Glosa") de vídeo do YouTube em `02-Glosas/<ano>-<slug>.md` — TL;DR, Pontos-chave, Momentos-chave com timestamps, Citações verbatim. Para vídeos de carreira/liderança/soft skills, também gera uma seção **Frases para entrevista** com 15-25 trechos diretamente reutilizáveis em respostas de entrevista. |
 
-### Os 7 templates
+### Os 9 templates
 
-Sete `.md` com placeholders Templater (`<% tp.file.cursor(N) %>`) que as skills preenchem: um **Roadmap**, e os pares **Processed + Workbook** para Session, Mock Interview e Community.
+Nove `.md` com placeholders Templater (`<% tp.file.cursor(N) %>`) que as skills preenchem: um **Roadmap**, os pares **Processed + Workbook** para Session, Mock Interview e Community, um **Template - Vaga** para preparação de vagas, e um **Template - Interview Question** para o banco de perguntas.
 
 ---
 
@@ -87,7 +97,7 @@ mkdir -p "00-Meta/templates/GCA"
 cp /caminho/pro/gca-toolkit/templates/*.md "00-Meta/templates/GCA/"
 ```
 
-Reinicie o Claude Code (ou rode `/help` para confirmar). Os comandos `/process-roadmap`, `/process-session`, `/process-mock-interview`, `/process-community` e `/coaching` devem aparecer.
+Reinicie o Claude Code (ou rode `/help` para confirmar). Os comandos `/process-roadmap`, `/process-session`, `/process-mock-interview`, `/process-community`, `/coaching`, `/processar-vaga`, `/process-question`, `/seed-question` e `/glosa-video` devem aparecer.
 
 > **Onde ficam as skills?** O Claude Code lê skills de `.claude/skills/<nome>/SKILL.md`. No meu setup, `.claude/skills` é um symlink pra `.agents/skills` (convenção minha) — você **não precisa** disso, pode usar `.claude/skills/` direto.
 
@@ -162,7 +172,13 @@ As skills referenciam caminhos literais. Se a sua estrutura difere, troque:
 
 ### 2. Seu nome (detecção de participação na Community)
 
-`process-community` procura **"Josenaldo Matos"** nos *room assignments* pra saber em quais rounds você participou e gerar os slots reflexivos. Abra `skills/process-community/SKILL.md` e troque por **o seu nome** (como ele aparece nos PDFs da Thaís).
+`process-community` procura o nome do aluno nos *room assignments* pra saber em quais rounds você participou e gerar os slots reflexivos. Abra `skills/process-community/SKILL.md` e troque a linha:
+
+```
+Procurar o nome do aluno (configurar: substituir pelo nome real do usuário do vault)
+```
+
+pelo **seu nome** (como ele aparece nos PDFs da Thaís).
 
 ### 3. Nome da mentora e do programa
 
@@ -195,13 +211,25 @@ A skill `coaching` tem uma tabela de regras (BLUF, Power Verbs, "I" não "We", s
 
 As regras em si (BLUF, Power Verbs, etc.) são gerais da mentoria — provavelmente valem pra você também.
 
+### 6. Banco de perguntas (`process-question` + `seed-question`)
+
+As skills de Q-bank assumem a pasta `03-Dominios/Inglês/Entrevistas/Database/`. Ajuste se a sua estrutura for diferente. O arquivo `Backlog de Perguntas.md` precisa existir antes de usar `/seed-question` — crie-o manualmente (seções `## Pendentes` e `## Processadas`).
+
+### 7. Vagas (`processar-vaga`)
+
+Copia o `Template - Vaga.md` pra `00-Meta/templates/Template - Vaga.md` (raiz dos templates, não subpasta GCA). A pasta de vagas esperada é `03-Dominios/Inglês/Entrevistas/Vagas/` — crie se não existir.
+
+### 8. Glosas de vídeo (`glosa-video`)
+
+Requer `uvx` (instalado via `uv`). Salva glosas em `02-Glosas/`. Ajuste o caminho se seu vault tiver estrutura diferente.
+
 ### Checklist rápido de adaptação
 
-- [ ] Conferir/ajustar os 5 caminhos de pasta nas skills
-- [ ] Trocar **"Josenaldo Matos"** pelo seu nome em `process-community`
+- [ ] Conferir/ajustar os caminhos de pasta nas skills
+- [ ] Trocar seu nome em `process-community` (linha com "nome do aluno")
 - [ ] (Opcional) Ajustar `mentora:` / `programa:` nos templates
 - [ ] (Opcional) Ajustar número de semanas/ciclos se sua turma for diferente
-- [ ] Copiar templates pra `00-Meta/templates/GCA/`
+- [ ] Copiar templates pra `00-Meta/templates/GCA/` (exceto Template - Vaga → raiz de templates)
 - [ ] Copiar skills pra `.claude/skills/`
 - [ ] Rodar `/process-roadmap` com o PDF do Cronograma e validar
 
